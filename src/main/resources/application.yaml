@@ -1,0 +1,40 @@
+server:
+  port: 8080
+logging:
+  level:
+    root: INFO
+    com.example.demo: DEBUG
+    org.apache.kafka: INFO
+    org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG
+
+spring:
+  application:
+    name: order-service-reactive
+  mongodb:
+    port: 27017
+    host: localhost
+    database: order-service
+    username: admin
+    password: password
+    authentication-database: admin
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: order-consumers
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
